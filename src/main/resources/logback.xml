@@ -1,0 +1,22 @@
+<configuration>
+    <conversionRule conversionWord="highlight" converterClass="ch.qos.logback.classic.pattern.color.HighlightingCompositeConverter">
+        <mapper>
+            <pattern>WARN</pattern>
+            <foreground>YELLOW</foreground> <!-- Set color for WARN level -->
+        </mapper>
+        <mapper>
+            <pattern>ERROR</pattern>
+            <foreground>RED</foreground> <!-- Set color for ERROR level -->
+        </mapper>
+    </conversionRule>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%highlight(TIME="%d{HH:mm:ss.SSS}" SEVERITY="%level" ORIGIN="%logger{36}" MESSAGE="%msg") %n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

@@ -1,0 +1,286 @@
+erDiagram
+    User {
+        int ID PK
+        string Username
+        string Password
+        string Email
+        boolean IsAdmin
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+    Tournament {
+        int ID PK
+        string Name
+        string Description
+        int TournamentTypeID FK
+        decimal BuyIn
+        boolean FreeToPlay
+        int StatusID FK
+        datetime ScheduledStartTime
+        datetime ActualStartTime
+        datetime EndTime
+        int CurrentLevel
+        int RemainingLevelTime
+        int CreatedBy FK
+        int BlindStructureID FK
+        int StartingStackID FK
+        int SettingsID FK
+        int SeriesID FK
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+    Status {
+        int ID PK
+        string Name
+        string Description
+    }
+    TournamentType {
+        int ID PK
+        string Name
+        string Description
+    }
+    TournamentSettings {
+        int ID PK
+        decimal Bounty
+        int MaxRebuys
+        datetime RebuyEndTime
+    }
+    UserTournament {
+        int ID PK
+        int UserID FK
+        int TournamentID FK
+        datetime JoinedAt
+        boolean BuyInPaid
+        int Rebuys
+    }
+    PrizeDistribution {
+        int ID PK
+        int TournamentID FK
+        int Position
+        decimal Percentage
+    }
+    Series {
+        int ID PK
+        string Name
+        string Description
+        int CreatedBy FK
+        decimal PrizePoolPercentage
+        decimal AccumulatedPrizePool
+        int FinalTournamentID FK
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+    SeriesTournament {
+        int ID PK
+        int SeriesID FK
+        int TournamentID FK
+    }
+    Invitation {
+        int ID PK
+        int TournamentID FK
+        int UserID FK
+        string Email
+        int StatusID FK
+        datetime SentAt
+    }
+    InvitationStatus {
+        int ID PK
+        string Name
+        string Description
+    }
+    Equipment {
+        int ID PK
+        string Name
+        int EquipmentTypeID FK
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+    EquipmentType {
+        int ID PK
+        string Name
+        string Description
+    }
+    TournamentEquipment {
+        int ID PK
+        int TournamentID FK
+        int EquipmentID FK
+    }
+    PokerTable {
+        int ID PK
+        int EquipmentID FK
+        int Seats
+    }
+    ChipSet {
+        int ID PK
+        int EquipmentID FK
+    }
+    ChipValue {
+        int ID PK
+        int ChipSetID FK
+        int Value
+        int Quantity
+    }
+    StartingStack {
+        int ID PK
+        string Name
+        int CreatedBy FK
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+    StartingStackChip {
+        int ID PK
+        int StartingStackID FK
+        int ChipValueID FK
+        int Quantity
+    }
+    BlindStructure {
+        int ID PK
+        string Name
+        int CreatedBy FK
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+    Level {
+        int ID PK
+        int BlindStructureID FK
+        int Level
+        int Duration
+        string Type
+    }
+    BlindLevel {
+        int ID PK
+        int BlindStructureID FK
+        int Level
+        int Duration
+        int SmallBlind
+        int BigBlind
+        boolean ColorUp
+    }
+    BreakLevel {
+        int ID PK
+        int BlindStructureID FK
+        int Level
+        int Duration
+    }
+    Round {
+        int ID PK
+        int TournamentID FK
+        int LevelID FK
+        int StatusID FK
+        int RemainingTime
+    }
+    Notification {
+        int ID PK
+        int UserID FK
+        string Message
+        boolean IsRead
+        datetime SentAt
+    }
+    TournamentResult {
+        int ID PK
+        int TournamentID FK
+        int UserID FK
+        int Position
+        int Points
+        int BountiesWon
+        boolean WonPrize
+        datetime CreatedAt
+    }
+    Prize {
+        int ID PK
+        int TournamentResultID FK
+        string Type
+        decimal Amount
+        datetime CreatedAt
+    }
+    UserActivityLog {
+        int ID PK
+        int UserID FK
+        string Action
+        datetime Timestamp
+        string Details
+    }
+    UserPermission {
+        int ID PK
+        int UserID FK
+        int TournamentID FK
+        boolean CanStartPauseStop
+        boolean CanEditPrizeDistribution
+        boolean CanEditSettings
+    }
+    AdminPermission {
+        int ID PK
+        string Name
+        string Description
+    }
+    AdminUserPermission {
+        int ID PK
+        int UserID FK
+        int AdminPermissionID FK
+    }
+    TableSeating {
+        int ID PK
+        int TournamentID FK
+        int TableID FK
+        int UserID FK
+        int SeatNumber
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+    TableBalanceLog {
+        int ID PK
+        int TournamentID FK
+        int FromTableID FK
+        int ToTableID FK
+        int UserID FK
+        int SeatNumber
+        datetime MovedAt
+    }
+
+    User ||--o{ UserTournament : joins
+    User ||--o{ Invitation : receives
+    User ||--o{ Notification : receives
+    User ||--o{ BlindStructure : creates
+    User ||--o{ StartingStack : creates
+    User ||--o{ TournamentResult : participates_in
+    User ||--o{ Prize : awarded
+    User ||--o{ UserActivityLog : logs
+    User ||--o{ UserPermission : has_permission
+    User ||--o{ AdminUserPermission : has_admin_permission
+    User ||--o{ TableSeating : sits_at
+    User ||--o{ TableBalanceLog : moved_in
+    Tournament ||--o{ UserTournament : includes
+    Tournament ||--o{ Invitation : has
+    Tournament ||--o{ TournamentResult : has
+    Tournament ||--o{ Round : includes
+    Tournament ||--|{ BlindStructure : uses
+    Tournament ||--|{ StartingStack : uses
+    Tournament ||--|{ TournamentSettings : has
+    Tournament ||--|{ TournamentType : categorized_as
+    Tournament ||--o{ PrizeDistribution : defines
+    Tournament ||--o{ TournamentEquipment : uses
+    Tournament ||--o{ SeriesTournament : belongs_to
+    Tournament ||--o{ Prize : awards
+    Tournament ||--|{ Status : has
+    Tournament ||--o{ TableSeating : hosts
+    Tournament ||--o{ TableBalanceLog : records
+    Series ||--o{ SeriesTournament : includes
+    Series ||--|{ User : created_by
+    Series }o--|| Tournament : final
+    Invitation ||--|{ InvitationStatus : has
+    Equipment ||--|{ EquipmentType : categorized_as
+    TournamentEquipment }o--|| Equipment : includes
+    PokerTable }o--|| Equipment : specializes
+    PokerTable ||--o{ TableSeating : has
+    ChipSet }o--|| Equipment : specializes
+    ChipValue }o--|| ChipSet : contains
+    StartingStack ||--o{ StartingStackChip : has
+    StartingStack }o--|| User : created_by
+    StartingStackChip }o--|| ChipValue : includes
+    BlindStructure ||--o{ Level : has
+    BlindStructure }o--|| User : created_by
+    Round ||--|{ Level : follows
+    Round ||--|{ Status : has
+    UserActivityLog }o--|| User : belongs_to
+    AdminUserPermission ||--|{ AdminPermission : grants
+    PokerTable ||--|| TournamentEquipment : specializes_in

@@ -18,7 +18,6 @@ class FlywayInitializer(private val environment: Environment) {
         val dbUrl = environment.getRequiredProperty("spring.datasource.url")
         val dbUser = environment.getRequiredProperty("spring.datasource.username")
         val dbPass = environment.getRequiredProperty("spring.datasource.password")
-        val dbSchema = environment.getRequiredProperty("DB_SCHEMA")
         val flywayDbSchema = environment.getRequiredProperty("FLYWAY_DB_SCHEMA")
         val flywayLocation = environment.getRequiredProperty("FLYWAY_LOCATION")
 

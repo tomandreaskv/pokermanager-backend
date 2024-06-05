@@ -28,6 +28,9 @@ data class Series(
     @JoinColumn(name = "final_tournament_id")
     val finalTournament: Tournament? = null,
 
+    @OneToMany(mappedBy = "series", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val tournaments: List<Tournament> = mutableListOf(),
+
     @Column(name = "created_at")
     val createdAt: LocalDateTime,
 

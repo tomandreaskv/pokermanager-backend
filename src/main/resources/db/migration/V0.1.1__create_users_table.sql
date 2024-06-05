@@ -1,4 +1,4 @@
--- V1__Create_users_table.sql
+
 CREATE TABLE pokerman.users (
     id BIGSERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
@@ -9,5 +9,5 @@ CREATE TABLE pokerman.users (
     updated_at TIMESTAMP NOT NULL
 );
 
-CREATE INDEX idx_users_username ON users(username);
-CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_username ON pokerman.users(username);
+CREATE INDEX idx_users_email ON pokerman.users(email);

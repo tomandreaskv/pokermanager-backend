@@ -1,21 +1,22 @@
-package no.vingaas.pokermanager.entities.equipment
+package no.vingaas.pokermanager.entities.stack
 
 import jakarta.persistence.*
+import no.vingaas.pokermanager.entities.user.User
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "equipments")
-data class Equipment(
+@Table(name = "starting_stacks")
+data class StartingStack(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    @Column( name = "equipment_name", nullable = false)
-    val equipmentName: String,
+    @Column( name = "stack_name", nullable = false)
+    val stackName: String,
 
     @ManyToOne
-    @JoinColumn(name = "equipment_type_id", nullable = false)
-    val equipmentType: EquipmentType,
+    @JoinColumn(name = "created_by", nullable = false)
+    val createdBy: User,
 
     @Column(name = "created_at", nullable = false)
     val createdAt: LocalDateTime,

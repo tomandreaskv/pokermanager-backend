@@ -11,7 +11,7 @@ data class BlindStructure(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    @Column(nullable = false)
+    @Column(name = "blind_structures_name", nullable = false)
     val blindStructuresName: String,
 
     @ManyToOne
@@ -21,9 +21,9 @@ data class BlindStructure(
     @OneToMany(mappedBy = "blindStructure", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val levels: List<Level> = emptyList(),
 
-    @Column(nullable = false)
+    @Column( name = "created_at", nullable = false)
     val createdAt: LocalDateTime,
 
-    @Column(nullable = false)
+    @Column( name = "updated_at", nullable = false)
     val updatedAt: LocalDateTime
 )

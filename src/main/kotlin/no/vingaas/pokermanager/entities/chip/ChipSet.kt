@@ -5,7 +5,7 @@ import no.vingaas.pokermanager.entities.equipment.Equipment
 
 
 @Entity
-@Table(name = "chip_sets")
+@Table(name = "chip_sets", schema = "pokerman")
 data class ChipSet(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

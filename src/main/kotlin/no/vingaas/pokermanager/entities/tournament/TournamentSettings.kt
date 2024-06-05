@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "tournament_settings")
+@Table(name = "tournament_settings", schema = "pokerman")
 data class TournamentSettings(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

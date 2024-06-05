@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import no.vingaas.pokermanager.entities.chip.ChipValue
 
 @Entity
-@Table(name = "starting_stack_chips")
+@Table(name = "starting_stack_chips", schema = "pokerman")
 data class StartingStackChip(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

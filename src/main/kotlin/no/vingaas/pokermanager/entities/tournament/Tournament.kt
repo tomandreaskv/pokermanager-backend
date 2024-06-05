@@ -2,12 +2,13 @@ package no.vingaas.pokermanager.entities.tournament
 
 import jakarta.persistence.*
 import no.vingaas.pokermanager.entities.blindstructure.BlindStructure
+import no.vingaas.pokermanager.entities.common.Status
 import no.vingaas.pokermanager.entities.stack.StartingStack
 import no.vingaas.pokermanager.entities.user.User
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "tournaments")
+@Table(name = "tournaments", schema = "pokerman")
 data class Tournament(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

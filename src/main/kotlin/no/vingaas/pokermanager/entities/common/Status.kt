@@ -1,9 +1,9 @@
-package no.vingaas.pokermanager.entities.tournament
+package no.vingaas.pokermanager.entities.common
 
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "statuses")
+@Table(name = "statuses", schema = "pokerman")
 data class Status(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

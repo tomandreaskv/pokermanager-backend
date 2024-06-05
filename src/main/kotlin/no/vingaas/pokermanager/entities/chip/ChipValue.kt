@@ -3,7 +3,7 @@ package no.vingaas.pokermanager.entities.chip
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "chip_values")
+@Table(name = "chip_values", schema = "pokerman")
 data class ChipValue(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

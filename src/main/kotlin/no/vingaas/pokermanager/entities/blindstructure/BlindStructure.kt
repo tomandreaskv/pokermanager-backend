@@ -5,7 +5,7 @@ import no.vingaas.pokermanager.entities.user.User
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "blind_structures")
+@Table(name = "blind_structures" , schema = "pokerman")
 data class BlindStructure(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

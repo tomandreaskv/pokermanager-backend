@@ -5,7 +5,7 @@ import no.vingaas.pokermanager.entities.user.User
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "series")
+@Table(name = "series", schema = "pokerman")
 data class Series(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

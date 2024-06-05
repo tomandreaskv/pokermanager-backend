@@ -3,7 +3,7 @@ package no.vingaas.pokermanager.entities.tournament
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "tournament_types")
+@Table(name = "tournament_types", schema = "pokerman")
 data class TournamentType(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

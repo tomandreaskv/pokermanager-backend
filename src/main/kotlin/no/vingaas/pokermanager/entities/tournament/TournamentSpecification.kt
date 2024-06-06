@@ -45,5 +45,8 @@ data class TournamentSpecification(
     val guaranteedPrizePool: Double? = null,
 
     @Column(name = "max_participants")
-    val maxParticipants: Int? = null
+    val maxParticipants: Int? = null,
+
+    @OneToMany(mappedBy = "specification")
+    val prizeDistribution: List<PrizeDistribution> = mutableListOf()
 )

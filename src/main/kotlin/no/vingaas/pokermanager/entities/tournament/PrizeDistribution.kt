@@ -10,8 +10,8 @@ data class PrizeDistribution(
     val id: Long = 0,
 
     @ManyToOne
-    @JoinColumn(name = "tournament_id", nullable = false)
-    val tournament: Tournament,
+    @JoinColumn(name = "specification_id", nullable = false)
+    val specification: TournamentSpecification,
 
     @Column(nullable = false)
     val position: Int,

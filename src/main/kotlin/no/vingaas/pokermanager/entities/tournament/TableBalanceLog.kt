@@ -28,9 +28,9 @@ data class TableBalanceLog(
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
 
-    @Column(nullable = false)
+    @Column( name = "seat_number", nullable = false)
     val seatNumber: Int,
 
-    @Column(nullable = false)
+    @Column(name = "moved_at", nullable = false)
     val movedAt: LocalDateTime
 )

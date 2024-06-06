@@ -31,5 +31,8 @@ data class TableSeating(
     val createdAt: LocalDateTime,
 
     @Column(nullable = false)
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
+
+    @Column(nullable = false)
+    val isDealer: Boolean = false
 )

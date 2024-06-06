@@ -2,6 +2,7 @@ package no.vingaas.pokermanager.entities.tournament
 
 import jakarta.persistence.*
 import no.vingaas.pokermanager.entities.blindstructure.BlindStructure
+import no.vingaas.pokermanager.entities.equipment.Equipment
 import no.vingaas.pokermanager.entities.stack.StartingStack
 import java.time.LocalDateTime
 
@@ -48,5 +49,13 @@ data class TournamentSpecification(
     val maxParticipants: Int? = null,
 
     @OneToMany(mappedBy = "specification")
-    val prizeDistribution: List<PrizeDistribution> = mutableListOf()
+    val prizeDistribution: List<PrizeDistribution> = mutableListOf(),
+
+    @ManyToMany
+    @JoinTable(
+        name = "specification_equipments",
+        joinColumns = [JoinColumn(name = "specification_id")],
+        inverseJoinColumns = [JoinColumn(name = "equipment_id")]
+    )
+    val equipments: List<Equipment> = mutableListOf()
 )

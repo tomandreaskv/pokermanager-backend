@@ -19,10 +19,10 @@ data class Series(
     val createdBy: User,
 
     @Column(name = "prize_pool_percentage")
-    val prizePoolPercentage: Long? = null,
+    val prizePoolPercentage: Double? = null,
 
     @Column(name = "accumulated_prize_pool")
-    val accumulatedPrizePool: Long? = null,
+    val accumulatedPrizePool: Double? = null,
 
     @ManyToOne
     @JoinColumn(name = "final_tournament_id")

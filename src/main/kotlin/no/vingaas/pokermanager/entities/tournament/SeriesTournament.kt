@@ -14,5 +14,10 @@ data class SeriesTournament(
 
     @ManyToOne
     @JoinColumn(name = "tournament_id")
-    val tournament: Tournament
+    val tournament: Tournament,
+
+    @Column(name = "prize_pool_percentage")
+    val prizePoolPercentage: Double? = null
+
+
 )

@@ -63,5 +63,8 @@ data class Tournament(
 
     @OneToOne
     @JoinColumn(name = "current_round_id")
-    val currentRound: TournamentRound? = null
+    val currentRound: TournamentRound? = null,
+
+    @OneToMany(mappedBy = "tournament")
+    val tableSeatings: List<TableSeating> = mutableListOf(),
 )

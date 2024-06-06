@@ -8,7 +8,7 @@ import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 import java.sql.DriverManager
 
-@Component
+//@Component
 class FlywayInitializer(private val environment: Environment) {
     private val logger: Logger = LoggerFactory.getLogger(FlywayInitializer::class.java)
     @PostConstruct

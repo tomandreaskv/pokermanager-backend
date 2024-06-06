@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Table(name = "levels", schema = "pokerman")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "level_type", discriminatorType = DiscriminatorType.STRING)
-sealed class Level(
+open class Level(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open val id: Long = 0,

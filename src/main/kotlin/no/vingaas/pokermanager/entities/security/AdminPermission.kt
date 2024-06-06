@@ -1,4 +1,4 @@
-package no.vingaas.pokermanager.security
+package no.vingaas.pokermanager.entities.security
 
 import jakarta.persistence.*
 

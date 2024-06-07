@@ -1,4 +1,4 @@
--- Opprett tabeller med indekser og utenlandske nøkler direkte
+-- Opprett tabeller med indekser og fremmed nøkler direkte
 CREATE TABLE pokerman.users (
     id BIGSERIAL PRIMARY KEY,
     is_admin BOOLEAN,

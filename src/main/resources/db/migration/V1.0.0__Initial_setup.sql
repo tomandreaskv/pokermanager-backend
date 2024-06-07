@@ -1,4 +1,4 @@
--- Opprett tabeller med indekser og fremmed nøkler direkte
+-- create tables with indexes and foreign keys
 CREATE TABLE pokerman.users (
     id BIGSERIAL PRIMARY KEY,
     is_admin BOOLEAN,
@@ -352,6 +352,6 @@ CREATE TABLE pokerman.user_tournaments (
 
 CREATE INDEX idx_user_tournaments_user_id ON pokerman.user_tournaments (user_id);
 
--- Legg til fremmednøkkel for current_round_id til slutt
+-- added foreign keys to tables that were created without them because of circular dependencies
 ALTER TABLE pokerman.tournaments
     ADD CONSTRAINT fk_tournaments_current_round_id FOREIGN KEY (current_round_id) REFERENCES pokerman.tournament_rounds (id);

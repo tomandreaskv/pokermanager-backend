@@ -1,3 +1,5 @@
+
+CREATE SCHEMA IF NOT EXISTS pokerman;
 -- create tables with indexes and foreign keys
 CREATE TABLE pokerman.users (
     id BIGSERIAL PRIMARY KEY,

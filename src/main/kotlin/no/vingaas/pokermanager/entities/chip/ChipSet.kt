@@ -2,19 +2,22 @@ package no.vingaas.pokermanager.entities.chip
 
 import jakarta.persistence.*
 import no.vingaas.pokermanager.entities.equipment.Equipment
+import no.vingaas.pokermanager.entities.equipment.EquipmentType
+import java.time.LocalDateTime
 
 
 @Entity
 @Table(name = "chip_sets", schema = "pokerman")
 data class ChipSet(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    @OneToMany(mappedBy = "chipSet")
+    val chipValues: List<ChipValue>,
+    val tournamentChipSet: Boolean,
 
-    @Column(name = "chip_set_name", nullable = false)
-    val name: String,
-
+    override val id: Long = 0,
+    override val equipmentName: String,
+    override val description: String?,
     @ManyToOne
-    @JoinColumn(name = "equipment_id", nullable = false)
-    val equipment: Equipment
-)
+    override val equipmentType: EquipmentType,
+    override val createdAt: LocalDateTime,
+    override val updatedAt: LocalDateTime
+) : Equipment(id, equipmentName, description, equipmentType, createdAt, updatedAt)

@@ -65,6 +65,7 @@ CREATE TABLE pokerman.equipments (
     equipment_type_id BIGINT NOT NULL,
     updated_at TIMESTAMP(6) NOT NULL,
     equipment_name VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
     CONSTRAINT fk_equipments_equipment_type_id FOREIGN KEY (equipment_type_id) REFERENCES pokerman.equipment_types (id)
 );
 
@@ -72,12 +73,9 @@ CREATE INDEX idx_equipments_equipment_name ON pokerman.equipments (equipment_nam
 
 CREATE TABLE pokerman.chip_sets (
     id BIGSERIAL PRIMARY KEY,
-    equipment_id BIGINT NOT NULL,
-    chip_set_name VARCHAR(255) NOT NULL,
-    CONSTRAINT fk_chip_sets_equipment_id FOREIGN KEY (equipment_id) REFERENCES pokerman.equipments (id)
+    tournament_chip_set BOOLEAN NOT NULL,
+    CONSTRAINT fk_chip_sets_equipment_id FOREIGN KEY (id) REFERENCES pokerman.equipments (id)
 );
-
-CREATE INDEX idx_chip_sets_chip_set_name ON pokerman.chip_sets (chip_set_name);
 
 CREATE TABLE pokerman.chip_values (
     id BIGSERIAL PRIMARY KEY,
@@ -283,8 +281,7 @@ CREATE INDEX idx_notifications_is_read ON notifications (is_read);
 CREATE TABLE pokerman.poker_tables (
     id BIGSERIAL PRIMARY KEY,
     seats INTEGER NOT NULL,
-    equipment_id BIGINT NOT NULL,
-    CONSTRAINT fk_poker_tables_equipment_id FOREIGN KEY (equipment_id) REFERENCES pokerman.equipments (id)
+    CONSTRAINT fk_poker_tables_equipment_id FOREIGN KEY (id) REFERENCES pokerman.equipments (id)
 );
 
 CREATE INDEX idx_poker_tables_seats ON pokerman.poker_tables (seats);

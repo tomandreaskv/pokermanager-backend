@@ -242,11 +242,11 @@ CREATE TABLE admin_permissions (
 CREATE INDEX idx_admin_permissions_permission_name ON admin_permissions (permission_name);
 
 CREATE TABLE admin_user_permissions (
-    id BIGSERIAL PRIMARY KEY,
     admin_permission_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
-    CONSTRAINT fk_admin_user_permissions_admin_permission_id FOREIGN KEY (admin_permission_id) REFERENCES admin_permissions (id),
-    CONSTRAINT fk_admin_user_permissions_user_id FOREIGN KEY (user_id) REFERENCES pokerman.users (id)
+    PRIMARY KEY (user_id, admin_permission_id),
+    CONSTRAINT fk_admin_user_permissions_user_id FOREIGN KEY (user_id) REFERENCES pokerman.users (id),
+    CONSTRAINT fk_admin_user_permissions_admin_permission_id FOREIGN KEY (admin_permission_id) REFERENCES admin_permissions (id)
 );
 
 CREATE INDEX idx_admin_user_permissions_user_id ON admin_user_permissions (user_id);

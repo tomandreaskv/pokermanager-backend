@@ -1,6 +1,7 @@
 package no.vingaas.pokermanager.entities.user
 
 import jakarta.persistence.*
+import no.vingaas.pokermanager.entities.security.AdminPermission
 import java.time.LocalDateTime
 
 @Entity
@@ -20,5 +21,13 @@ data class User(
     val createdAt: LocalDateTime,
 
     @Column(name = "updated_at")
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
+
+    @ManyToMany
+    @JoinTable(
+        name = "admin_user_permissions",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "admin_permission_id")]
+    )
+    val adminPermissions: List<AdminPermission> = mutableListOf()
 )

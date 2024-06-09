@@ -39,6 +39,11 @@ dependencies {
 	testImplementation("org.testcontainers:postgresql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+
+	// Mockito dependencies
+	testImplementation("org.mockito:mockito-core:5.12.0")
+	testImplementation("org.mockito:mockito-inline:5.2.0")
+	testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
 }
 
 tasks.withType<KotlinCompile> {

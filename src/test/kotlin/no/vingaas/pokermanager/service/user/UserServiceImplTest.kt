@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import java.time.LocalDateTime
@@ -17,11 +18,9 @@ import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class UserServiceImplTest {
-    @Mock
-    private lateinit var userRepository: UserRepository
+    private var userRepository: UserRepository = mock(UserRepository::class.java)
 
-    @Mock
-    private lateinit var validator: UserValidator
+    private  var validator: UserValidator = mock(UserValidator::class.java)
 
     @InjectMocks
     private lateinit var userService: UserServiceImpl
@@ -40,6 +39,7 @@ class UserServiceImplTest {
             updatedAt = LocalDateTime.now(),
             adminPermissions = listOf()
         )
+
     }
 
     @Test

@@ -29,5 +29,9 @@ data class User(
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "admin_permission_id")]
     )
-    val adminPermissions: List<AdminPermission> = mutableListOf()
+    val adminPermissions: List<AdminPermission> = mutableListOf(),
+
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "user_detail_id", referencedColumnName = "id")
+    val userDetail: UserDetail
 )

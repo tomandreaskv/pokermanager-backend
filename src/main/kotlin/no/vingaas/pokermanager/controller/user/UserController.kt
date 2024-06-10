@@ -2,6 +2,7 @@ package no.vingaas.pokermanager.controller.user
 
 import no.vingaas.pokermanager.dto.UserCreateDTO
 import no.vingaas.pokermanager.entities.user.User
+import no.vingaas.pokermanager.entities.user.UserDetail
 import no.vingaas.pokermanager.service.user.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -39,12 +40,23 @@ class UserController(private val userService: UserService) {
         // TODO: move user creation logic to service and implement password hashing
         val newUser = User(
             username = user.username,
-            password = "testpassword",
             email = user.email,
             isAdmin = false,
             adminPermissions = emptyList(),
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
+            userDetail = UserDetail(
+                firstname = user.firstname,
+                lastname = user.lastname,
+                dateOfBirth = user.dateOfBirth,
+                country = user.country,
+                bio = null,
+                address = null,
+                city = null,
+                phoneNumber = null,
+                profilePicture = null,
+                zipCode = null
+            )
         )
         val createdUser = userService.save(newUser)
         return ResponseEntity.ok(createdUser)

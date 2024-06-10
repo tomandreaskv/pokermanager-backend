@@ -16,5 +16,7 @@ class EnvironmentConfig {
         System.setProperty("DB_SCHEMA", dotenv["DB_SCHEMA"])
         System.setProperty("FLYWAY_DB_SCHEMA", dotenv["DB_SCHEMA"])
         System.setProperty("FLYWAY_LOCATION", dotenv["FLYWAY_LOCATION"])
+        System.setProperty("spring.security.user.name", dotenv["APP_USERNAME"])
+        System.setProperty("spring.security.user.password", dotenv["APP_PASSWORD"])
     }
 }

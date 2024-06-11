@@ -12,7 +12,7 @@ data class BlindStructure(
     val id: Long = 0,
 
     @Column(name = "blind_structures_name", nullable = false)
-    val blindStructuresName: String,
+    var blindStructuresName: String,
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)
@@ -25,5 +25,5 @@ data class BlindStructure(
     val createdAt: LocalDateTime,
 
     @Column( name = "updated_at", nullable = false)
-    val updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime
 )

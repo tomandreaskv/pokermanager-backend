@@ -34,24 +34,12 @@ class UserServiceImpl(private val userRepository: UserRepository, private val va
 
     @Transactional
     override fun save(user: User): User {
-        logger.info("Saving user: ${user.username}")
-        val errors = validator.validate(user)
-        if (errors.isNotEmpty()) {
-            logger.error("Invalid user data: ${errors.joinToString(", ")}")
-            throw InvalidUserException("Invalid user data: ${errors.joinToString(", ")}")
-        }
-        return userRepository.save(user)
+        return saveOrUpdateUser(user, "Saving")
     }
 
     @Transactional
     override fun update(user: User): User {
-        logger.info("Updating user: ${user.username}")
-        val errors = validator.validate(user)
-        if (errors.isNotEmpty()) {
-            logger.error("Invalid user data: ${errors.joinToString(", ")}")
-            throw InvalidUserException("Invalid user data: ${errors.joinToString(", ")}")
-        }
-        return userRepository.save(user)
+        return saveOrUpdateUser(user, "Updating")
     }
 
     @Transactional
@@ -68,5 +56,15 @@ class UserServiceImpl(private val userRepository: UserRepository, private val va
     override fun findById(id: Long): User? {
         logger.info("Finding user by id: $id")
         return userRepository.findById(id).orElse(null)
+    }
+
+    private fun saveOrUpdateUser(user: User, action: String): User {
+        logger.info("$action user: ${user.username}")
+        val errors = validator.validate(user)
+        if (errors.isNotEmpty()) {
+            logger.error("Invalid user data: ${errors.joinToString(", ")}")
+            throw InvalidUserException("Invalid user data: ${errors.joinToString(", ")}")
+        }
+        return userRepository.save(user)
     }
 }

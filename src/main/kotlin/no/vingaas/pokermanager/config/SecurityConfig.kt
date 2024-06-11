@@ -2,8 +2,6 @@ package no.vingaas.pokermanager.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.env.Environment
-import org.springframework.core.env.PropertiesPropertySource
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
@@ -17,7 +15,7 @@ class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .cors { it.configurationSource { request -> org.springframework.web.cors.CorsConfiguration().applyPermitDefaultValues() } }
+            .cors { it.configurationSource { org.springframework.web.cors.CorsConfiguration().applyPermitDefaultValues() } }
             .csrf { it.disable() }
             .authorizeHttpRequests { authorize ->
                 authorize

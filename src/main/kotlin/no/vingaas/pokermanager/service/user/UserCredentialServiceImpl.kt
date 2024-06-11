@@ -36,18 +36,4 @@ class UserCredentialServiceImpl(private val userCredentialRepository: UserCreden
         logger.info("Deleting user credential")
         userCredentialRepository.delete(userCredential)
     }
-
-    private fun generateTempPassword(): String {
-        // Implement your temporary password generation logic here
-        // This is just a simple example and should not be used in production
-        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-        return (1..16)
-            .map { allowedChars.random() }
-            .joinToString("")
-    }
-
-    private fun sendTempPasswordToUserEmail(email: String, tempPassword: String) {
-        // Implement your email sending logic here
-        // You might want to use a service like JavaMailSender
-    }
 }

@@ -30,12 +30,12 @@ class UserServiceImplTest {
         user = User(
             id = 1L,
             username = "testuser",
-            password = "password",
             email = "test@example.com",
             isAdmin = false,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now(),
-            adminPermissions = listOf()
+            adminPermissions = listOf(),
+            userDetail = mock()
         )
 
     }

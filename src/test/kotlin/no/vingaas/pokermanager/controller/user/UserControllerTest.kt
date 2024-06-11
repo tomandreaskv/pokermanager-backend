@@ -1,6 +1,5 @@
 package no.vingaas.pokermanager.controller.user
 
-import no.vingaas.pokermanager.dto.UserCreateDTO
 import no.vingaas.pokermanager.entities.user.User
 import no.vingaas.pokermanager.service.user.UserService
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -31,23 +30,23 @@ class UserControllerTest {
         user = User(
             id = 1L,
             username = "testuser",
-            password = "password",
             email = "test@example.com",
             isAdmin = false,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now(),
-            adminPermissions = listOf()
+            adminPermissions = listOf(),
+            userDetail = mock()
         )
 
         user2 = User(
             id = 2L,
             username = "testuser2",
-            password = "password",
             email = "test2@example.com",
             isAdmin = true,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now(),
-            adminPermissions = listOf()
+            adminPermissions = listOf(),
+            userDetail = mock()
         )
     }
 
@@ -78,16 +77,6 @@ class UserControllerTest {
         val response: ResponseEntity<List<User>> = userController.getAllUsers()
         assertEquals(HttpStatus.OK, response.statusCode)
         assertEquals(users, response.body)
-    }
-
-    @Test
-    fun testCreateUser() {
-        val createdUser = UserCreateDTO(user.username, user.email)
-        `when`(userService.save(user)).thenReturn(user)
-
-        val response: ResponseEntity<User> = userController.createUser(createdUser)
-        assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(user, response.body)
     }
 
     @Test

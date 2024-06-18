@@ -1,7 +1,5 @@
 package no.vingaas.pokermanager.service.blindstructure
 
-import no.vingaas.pokermanager.dto.blindstructure.BlindLevelDTO
-import no.vingaas.pokermanager.dto.blindstructure.BlindStructureDTO
 import no.vingaas.pokermanager.entities.blindstructure.BlindLevel
 import no.vingaas.pokermanager.entities.blindstructure.BlindStructure
 import no.vingaas.pokermanager.entities.user.User
@@ -40,7 +38,7 @@ class BlindStructureServiceImplTest{
     )
     private val dummyBlindStructure = BlindStructure(
         id = 1,
-        blindStructuresName = "Test Structure",
+        name = "Test Structure",
         levels = listOf(
             BlindLevel(id = 1, blindStructureId = 1, levelOrder = 1, duration = 10, smallBlind = 10, bigBlind = 20, ante = 5)
         ),
@@ -48,13 +46,7 @@ class BlindStructureServiceImplTest{
         createdAt = LocalDateTime.now(),
         updatedAt = LocalDateTime.now()
     )
-    private val dummyBlindStructureDTO = BlindStructureDTO(
-        id = 1,
-        name = "Test Structure",
-        blindLevels = listOf(
-            BlindLevelDTO(id = 1, blindStructureId = 1, levelOrder = 1, duration = 10, smallBlind = 10, bigBlind = 20, ante = 5)
-        )
-    )
+
 
     @Test
     fun `test getBlindStructureWithId success`() {
@@ -62,7 +54,7 @@ class BlindStructureServiceImplTest{
 
         val result = blindStructureServiceImpl.getBlindStructureWithId(1L)
 
-        assertEquals(dummyBlindStructureDTO, result)
+        assertEquals(dummyBlindStructure, result)
         verify(blindStructureRepository).findById(1L)
     }
 
@@ -83,13 +75,13 @@ class BlindStructureServiceImplTest{
         val blindStructureCaptor = ArgumentCaptor.forClass(BlindStructure::class.java)
         `when`(blindStructureRepository.save(Mockito.any(BlindStructure::class.java))).thenReturn(dummyBlindStructure)
 
-        val result = blindStructureServiceImpl.createBlindStructure(dummyBlindStructureDTO, dummyUser)
+        val result = blindStructureServiceImpl.createBlindStructure(dummyBlindStructure, dummyUser)
 
         verify(blindStructureRepository).save(blindStructureCaptor.capture())
         val capturedBlindStructure = blindStructureCaptor.value
-        assertEquals("Test Structure", capturedBlindStructure.blindStructuresName)
+        assertEquals("Test Structure", capturedBlindStructure.name)
         assertEquals(dummyUser, capturedBlindStructure.createdBy)
-        assertEquals(dummyBlindStructureDTO, result)
+        assertEquals(dummyBlindStructure, result)
     }
 
     @Test
@@ -97,9 +89,9 @@ class BlindStructureServiceImplTest{
         `when`(blindStructureRepository.findById(1L)).thenReturn(Optional.of(dummyBlindStructure))
         `when`(blindStructureRepository.save(Mockito.any(BlindStructure::class.java))).thenReturn(dummyBlindStructure)
 
-        val result = blindStructureServiceImpl.updateBlindStructure(dummyBlindStructureDTO)
+        val result = blindStructureServiceImpl.updateBlindStructure(dummyBlindStructure)
 
-        assertEquals(dummyBlindStructureDTO, result)
+        assertEquals(dummyBlindStructure, result)
         verify(blindStructureRepository).findById(1L)
         verify(blindStructureRepository).save(dummyBlindStructure)
     }
@@ -109,7 +101,7 @@ class BlindStructureServiceImplTest{
         `when`(blindStructureRepository.findById(1L)).thenReturn(Optional.empty())
 
         val exception = assertThrows(IllegalArgumentException::class.java) {
-            blindStructureServiceImpl.updateBlindStructure(dummyBlindStructureDTO)
+            blindStructureServiceImpl.updateBlindStructure(dummyBlindStructure)
         }
 
         assertEquals("No BlindStructure with id: 1", exception.message)
@@ -144,7 +136,7 @@ class BlindStructureServiceImplTest{
 
         val result = blindStructureServiceImpl.getAllBlindStructures()
 
-        assertEquals(listOf(dummyBlindStructureDTO), result)
+        assertEquals(listOf(dummyBlindStructure), result)
         verify(blindStructureRepository).findAll()
     }
 }

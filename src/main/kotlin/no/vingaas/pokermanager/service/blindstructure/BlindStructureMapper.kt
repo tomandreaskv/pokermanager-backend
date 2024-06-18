@@ -15,7 +15,7 @@ object BlindStructureMapper {
     fun toDTO(blindStructure: BlindStructure): BlindStructureDTO {
         return BlindStructureDTO(
             id = blindStructure.id,
-            name = blindStructure.blindStructuresName,
+            name = blindStructure.name,
             blindLevels = blindStructure.levels.map { toSpecificLevelDTO(it) }
         )
     }
@@ -46,7 +46,7 @@ object BlindStructureMapper {
         val now = LocalDateTime.now()
         return BlindStructure(
             id = blindStructureDTO.id,
-            blindStructuresName = blindStructureDTO.name,
+            name = blindStructureDTO.name,
             levels = blindStructureDTO.blindLevels.map { toSpecificLevelEntity(it) },
             createdBy = createdBy,
             createdAt = now,

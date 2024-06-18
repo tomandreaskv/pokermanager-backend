@@ -21,6 +21,9 @@ class UserCredentialServiceImplTest {
     @Mock
     private lateinit var userCredentialRepository: UserCredentialRepository
 
+    @Mock
+    private lateinit var userService : UserServiceImpl
+
     @InjectMocks
     private lateinit var userCredentialService: UserCredentialServiceImpl
 
@@ -35,7 +38,7 @@ class UserCredentialServiceImplTest {
     userDetail = mock()
     )
 
-    private val userCredential = UserCredential(1L, user, "test")
+    private val userCredential = UserCredential(id = 1L, userId = 1L, password = "test", isTemporal = false, isActive = true, validToDateTime = LocalDateTime.of(2025,1,1,1,1), createdAt = LocalDateTime.now())
 
     @Test
     fun `should return user credential when id exists`() {
@@ -61,10 +64,10 @@ class UserCredentialServiceImplTest {
     @Test
     fun `should return user credential when username exists`() {
         val userCredential = userCredential
-        val username = userCredential.user.username
-        Mockito.`when`(userCredentialRepository.findByUserUsername(username)).thenReturn(userCredential)
+        val userid = userCredential.userId
+        Mockito.`when`(userCredentialRepository.findByUserId(userid)).thenReturn(Optional.of(userCredential))
 
-        val result = userCredentialService.getCredentialsByUsername(username)
+        val result = userCredentialService.getCredentialsByUserId(userid).get()
 
         assertEquals(userCredential, result)
     }
@@ -81,7 +84,6 @@ class UserCredentialServiceImplTest {
 
     @Test
     fun `should save and return user credential`() {
-        val userCredential = UserCredential(1L, user, "test")
         Mockito.`when`(userCredentialRepository.save(userCredential)).thenReturn(userCredential)
 
         val result = userCredentialService.save(userCredential)
@@ -101,12 +103,11 @@ class UserCredentialServiceImplTest {
 
     @Test
     fun `should delete user credential`() {
-        val userCredential = userCredential
 
-        Mockito.doNothing().`when`(userCredentialRepository).delete(userCredential)
+        Mockito.doNothing().`when`(userCredentialRepository).deleteById(userCredential.id)
 
-        userCredentialService.delete(userCredential)
+        userCredentialService.delete(userCredential.id)
 
-        Mockito.verify(userCredentialRepository, Mockito.times(1)).delete(userCredential)
+        Mockito.verify(userCredentialRepository, Mockito.times(1)).deleteById(userCredential.id)
     }
 }

@@ -15,38 +15,25 @@ import org.springframework.stereotype.Service
 class LevelServiceImpl(private val levelRepository: LevelRepository) : LevelService {
     private val logger = LoggerFactory.getLogger(LevelServiceImpl::class.java)
 
-    override fun getLevelWithId(id: Long): LevelDTO {
+    override fun getLevelWithId(id: Long): Level {
         logger.info("Fetching level with id: $id")
-        val level = levelRepository.findById(id).orElseThrow { IllegalArgumentException("No Level with id: $id") }
-        return mapToDTO(level)
+       return levelRepository.findById(id).orElseThrow { IllegalArgumentException("No Level with id: $id") }
     }
 
-    override fun getAllLevels(): List<LevelDTO> {
+    override fun getAllLevels(): List<Level> {
         logger.info("Fetching all levels")
-        return levelRepository.findAll().map { mapToDTO(it) }
+        return levelRepository.findAll()
     }
 
-    override fun createLevel(createLevelDTO: CreateLevelDTO): LevelDTO {
-        logger.info("Creating level with type: ${createLevelDTO.type}")
-        val level = when (createLevelDTO.type) {
-            "blind" -> createBlindLevel(createLevelDTO)
-            "break" -> createBreakLevel(createLevelDTO)
-            else -> throw IllegalArgumentException("The type: ${createLevelDTO.type} is not a valid level type")
-        }
-        levelRepository.save(level)
-        return mapToDTO(level)
+    override fun createLevel(level: Level): Level {
+        logger.info("Creating level with type: ${level.javaClass.simpleName}")
+        return levelRepository.save(level)
     }
 
-    override fun updateLevel(levelDTO: LevelDTO): LevelDTO {
-        logger.info("Updating level with id: ${levelDTO.id}")
-        val existingLevel = levelRepository.findById(levelDTO.id).orElseThrow { IllegalArgumentException("No Level with id: ${levelDTO.id}") }
-        val updatedLevel = when (existingLevel) {
-            is BlindLevel -> updateBlindLevel(levelDTO as BlindLevelDTO, existingLevel)
-            is BreakLevel -> updateBreakLevel(levelDTO as BreakLevelDTO, existingLevel)
-            else -> throw IllegalArgumentException("The level with id: ${levelDTO.id} is not a BlindLevel or BreakLevel")
-        }
-        levelRepository.save(updatedLevel)
-        return mapToDTO(updatedLevel)
+    override fun updateLevel(level: Level): Level {
+        logger.info("Updating level with id: ${level.id}")
+        val existingLevel = levelRepository.findById(level.id).orElseThrow { IllegalArgumentException("No Level with id: ${level.id}") }
+        return levelRepository.save(existingLevel)
     }
 
     override fun deleteLevel(id: Long) {

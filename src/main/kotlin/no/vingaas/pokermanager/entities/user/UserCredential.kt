@@ -9,9 +9,8 @@ data class UserCredential(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    val user: User,
+    @Column(name = "user_id")
+    val userId: Long,
 
     val password: String,
     @Column(name = "is_temporal")

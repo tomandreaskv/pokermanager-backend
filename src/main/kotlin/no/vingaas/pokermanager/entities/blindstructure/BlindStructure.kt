@@ -12,7 +12,7 @@ data class BlindStructure(
     val id: Long = 0,
 
     @Column(name = "blind_structures_name", nullable = false)
-    var blindStructuresName: String,
+    var name: String,
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)

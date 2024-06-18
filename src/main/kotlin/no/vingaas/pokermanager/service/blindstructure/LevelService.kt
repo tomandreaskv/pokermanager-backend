@@ -1,18 +1,17 @@
 package no.vingaas.pokermanager.service.blindstructure
 
-import no.vingaas.pokermanager.dto.blindstructure.CreateLevelDTO
-import no.vingaas.pokermanager.dto.blindstructure.LevelDTO
+import no.vingaas.pokermanager.entities.blindstructure.Level
 import org.springframework.stereotype.Service
 
 @Service
 interface LevelService {
-    fun getLevelWithId(id: Long): LevelDTO
+    fun getLevelWithId(id: Long): Level
 
-    fun createLevel(createLevelDTO: CreateLevelDTO): LevelDTO
+    fun createLevel(level: Level): Level
 
-    fun updateLevel(levelDTO: LevelDTO): LevelDTO
+    fun updateLevel(level: Level): Level
 
     fun deleteLevel(id: Long)
 
-    fun getAllLevels(): List<LevelDTO>
+    fun getAllLevels(): List<Level>
 }

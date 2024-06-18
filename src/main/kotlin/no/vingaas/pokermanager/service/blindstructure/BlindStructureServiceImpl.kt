@@ -1,7 +1,7 @@
 package no.vingaas.pokermanager.service.blindstructure
 
 import jakarta.transaction.Transactional
-import no.vingaas.pokermanager.dto.blindstructure.BlindStructureDTO
+import no.vingaas.pokermanager.entities.blindstructure.BlindStructure
 import no.vingaas.pokermanager.entities.user.User
 import no.vingaas.pokermanager.repository.blindstructure.BlindStructureRepository
 import org.slf4j.LoggerFactory
@@ -16,28 +16,26 @@ class BlindStructureServiceImpl(
 
     private val logger = LoggerFactory.getLogger(BlindStructureServiceImpl::class.java)
 
-    override fun getBlindStructureWithId(id: Long): BlindStructureDTO {
+    override fun getBlindStructureWithId(id: Long): BlindStructure {
         logger.info("Fetching blind structure with id: $id")
         val blindStructure = blindStructureRepository.findById(id)
             .orElseThrow { IllegalArgumentException("No BlindStructure with id: $id") }
-        return BlindStructureMapper.toDTO(blindStructure)
+        return blindStructure
     }
 
-    override fun createBlindStructure(blindStructureDTO: BlindStructureDTO, createdBy: User): BlindStructureDTO {
-        logger.info("Creating blind structure with name: ${blindStructureDTO.name}")
-        val blindStructure = BlindStructureMapper.toEntity(blindStructureDTO, createdBy)
-        blindStructureRepository.save(blindStructure)
-        return BlindStructureMapper.toDTO(blindStructure)
+    override fun createBlindStructure(blindStructure: BlindStructure, createdBy: User): BlindStructure {
+        logger.info("Creating blind structure with name: ${blindStructure.name}")
+
+        return blindStructureRepository.save(blindStructure)
     }
 
-    override fun updateBlindStructure(blindStructureDTO: BlindStructureDTO): BlindStructureDTO {
-        logger.info("Updating blind structure with id: ${blindStructureDTO.id}")
-        val blindStructure = blindStructureRepository.findById(blindStructureDTO.id)
-            .orElseThrow { IllegalArgumentException("No BlindStructure with id: ${blindStructureDTO.id}") }
-        blindStructure.blindStructuresName = blindStructureDTO.name
+    override fun updateBlindStructure(updatedBlindStructure: BlindStructure): BlindStructure {
+        logger.info("Updating blind structure with id: ${updatedBlindStructure.id}")
+        val blindStructure = blindStructureRepository.findById(updatedBlindStructure.id)
+            .orElseThrow { IllegalArgumentException("No BlindStructure with id: ${updatedBlindStructure.id}") }
+        blindStructure.name = updatedBlindStructure.name
         blindStructure.updatedAt = LocalDateTime.now()
-        blindStructureRepository.save(blindStructure)
-        return BlindStructureMapper.toDTO(blindStructure)
+        return blindStructureRepository.save(blindStructure)
     }
 
     override fun deleteBlindStructure(id: Long) {
@@ -48,8 +46,8 @@ class BlindStructureServiceImpl(
         blindStructureRepository.deleteById(id)
     }
 
-    override fun getAllBlindStructures(): List<BlindStructureDTO> {
+    override fun getAllBlindStructures(): List<BlindStructure> {
         logger.info("Fetching all blind structures")
-        return blindStructureRepository.findAll().map { BlindStructureMapper.toDTO(it) }
+        return blindStructureRepository.findAll()
     }
 }

@@ -18,7 +18,7 @@ data class BlindStructure(
     @JoinColumn(name = "created_by", nullable = false)
     val createdBy: User,
 
-    @OneToMany(mappedBy = "blindStructureId", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "blindStructure", cascade = [CascadeType.ALL], orphanRemoval = true)
     val levels: List<Level> = mutableListOf(),
 
     @Column( name = "created_at", nullable = false)

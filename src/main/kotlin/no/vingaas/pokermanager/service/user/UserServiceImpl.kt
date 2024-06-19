@@ -50,7 +50,8 @@ class UserServiceImpl(private val userRepository: UserRepository, private val va
 
     override fun findAll(): List<User> {
         logger.info("Finding all users")
-        return userRepository.findAll()
+        val findAll = userRepository.findAllUsers()
+        return findAll
     }
 
     override fun findById(id: Long): User? {

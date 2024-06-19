@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: pokermanager-backend
+  jpa:
+    properties:
+      hibernate:
+        default_schema: pokerman
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: false
+  datasource:
+    url: jdbc:${DB_DRIVER}://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+  security:
+    user:
+      name: username
+      password: password
+jwt:
+  key: ${JWT_KEY}
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000

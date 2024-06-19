@@ -11,8 +11,9 @@ open class Level(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open val id: Long = 0,
 
-    @Column(name = "blind_structure_id", nullable = false)
-    open val blindStructureId: Long,
+    @ManyToOne
+    @JoinColumn(name = "blind_structure_id")
+    open val blindStructure: BlindStructure,
 
     @Column(name="level_order",nullable = false)
     open val levelOrder: Int,

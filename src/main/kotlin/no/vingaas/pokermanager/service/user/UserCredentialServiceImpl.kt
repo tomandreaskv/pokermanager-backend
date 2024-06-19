@@ -20,12 +20,6 @@ class UserCredentialServiceImpl(private val userCredentialRepository: UserCreden
         }
     }
 
-    override fun getCredentialsByUsername(username: String): UserCredential {
-        logger.info("Finding user credential by username: $username")
-        return userCredentialRepository.findByUserUsername(username)
-            ?: throw IllegalArgumentException("User credential not found")
-    }
-
     override fun getCredentialsByUserId(userId: Long): Optional<UserCredential> {
         logger.info("Finding user credential by user id: $userId")
         return userCredentialRepository.findByUserId(userId)
@@ -34,7 +28,8 @@ class UserCredentialServiceImpl(private val userCredentialRepository: UserCreden
 
     override fun save(userCredential: UserCredential): UserCredential {
         logger.info("Saving user credential")
-        return userCredentialRepository.save(userCredential)
+        val encryptedCredential = userCredential.copy(password = passwordEncoder.encode(userCredential.password))
+        return userCredentialRepository.save(encryptedCredential)
     }
 
     override fun update(userCredential: UserCredential): UserCredential {

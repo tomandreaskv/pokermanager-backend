@@ -40,7 +40,7 @@ class BlindStructureServiceImplTest{
         id = 1,
         name = "Test Structure",
         levels = listOf(
-            BlindLevel(id = 1, blindStructureId = 1, levelOrder = 1, duration = 10, smallBlind = 10, bigBlind = 20, ante = 5)
+            BlindLevel(id = 1, blindStructure = 1, levelOrder = 1, duration = 10, smallBlind = 10, bigBlind = 20, ante = 5)
         ),
         createdBy = dummyUser,
         createdAt = LocalDateTime.now(),

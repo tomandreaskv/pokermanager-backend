@@ -8,7 +8,6 @@ import java.util.*
 interface UserCredentialService {
 
         fun getCredentialsById(id: Long): UserCredential
-        fun getCredentialsByUsername(username: String): UserCredential
         fun getCredentialsByUserId(userId: Long): Optional<UserCredential>
         fun save(userCredential: UserCredential): UserCredential
         fun update(userCredential: UserCredential): UserCredential

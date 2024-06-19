@@ -7,7 +7,7 @@ import jakarta.persistence.*
 data class BlindLevel(
     override val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
-    override val blindStructureId: Long,
+    override val blindStructure: BlindStructure,
     override val levelOrder: Int,
     override val duration: Int,
 
@@ -19,4 +19,4 @@ data class BlindLevel(
 
     @Column(name = "ante")
     val ante: Int?
-) : Level(id, blindStructureId, levelOrder, duration)
+) : Level(id, blindStructure, levelOrder, duration)

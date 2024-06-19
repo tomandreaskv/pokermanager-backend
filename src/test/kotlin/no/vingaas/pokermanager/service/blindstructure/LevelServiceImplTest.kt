@@ -30,7 +30,7 @@ class LevelServiceImplTest {
 
     private val dummyBlindLevel = BlindLevel(
         id = 1L,
-        blindStructureId = 1L,
+        blindStructure = 1L,
         levelOrder = 1,
         duration = 10,
         smallBlind = 10,
@@ -39,14 +39,14 @@ class LevelServiceImplTest {
     )
     private val dummyBreakLevel = BreakLevel(
         id = 2L,
-        blindStructureId = 1L,
+        blindStructure = 1L,
         levelOrder = 2,
         duration = 5,
         colorUp = true
     )
     private val dummyBlindLevelDTO = BlindLevelDTO(
         id = 1L,
-        blindStructureId = 1L,
+        blindStructure = 1L,
         levelOrder = 1,
         duration = 10,
         smallBlind = 10,
@@ -55,7 +55,7 @@ class LevelServiceImplTest {
     )
     private val dummyBreakLevelDTO = BreakLevelDTO(
         id = 2L,
-        blindStructureId = 1L,
+        blindStructure = 1L,
         levelOrder = 2,
         duration = 5,
         colorUp = true
@@ -127,7 +127,7 @@ class LevelServiceImplTest {
 
         verify(levelRepository).save(levelCaptor.capture())
         val capturedLevel = levelCaptor.value
-        assertEquals(dummyBlindLevel.blindStructureId, capturedLevel.blindStructureId)
+        assertEquals(dummyBlindLevel.blindStructure, capturedLevel.blindStructure)
         assertEquals(dummyBlindLevel.levelOrder, capturedLevel.levelOrder)
         assertEquals(dummyBlindLevel.smallBlind, capturedLevel.smallBlind)
         assertEquals(dummyBlindLevel.bigBlind, capturedLevel.bigBlind)
@@ -145,7 +145,7 @@ class LevelServiceImplTest {
 
         verify(levelRepository).save(levelCaptor.capture())
         val capturedLevel = levelCaptor.value
-        assertEquals(dummyBreakLevel.blindStructureId, capturedLevel.blindStructureId)
+        assertEquals(dummyBreakLevel.blindStructure, capturedLevel.blindStructure)
         assertEquals(dummyBreakLevel.levelOrder, capturedLevel.levelOrder)
         assertEquals(dummyBreakLevel.colorUp, capturedLevel.colorUp)
         assertEquals(dummyBreakLevel.duration, capturedLevel.duration)

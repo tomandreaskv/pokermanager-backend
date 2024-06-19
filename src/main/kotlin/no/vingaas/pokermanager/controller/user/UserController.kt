@@ -2,7 +2,12 @@ package no.vingaas.pokermanager.controller.user
 
 import no.vingaas.pokermanager.dto.UserCreateDTO
 import no.vingaas.pokermanager.entities.user.User
+import no.vingaas.pokermanager.entities.user.UserCredential
 import no.vingaas.pokermanager.entities.user.UserDetail
+import no.vingaas.pokermanager.entities.user.UserRole
+import no.vingaas.pokermanager.service.user.UserCredentialService
+import no.vingaas.pokermanager.service.user.UserDetailService
+import no.vingaas.pokermanager.service.user.UserRoleService
 import no.vingaas.pokermanager.service.user.UserService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -11,7 +16,12 @@ import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/users")
-class UserController(private val userService: UserService) {
+class UserController(
+    private val userService: UserService,
+    private val userDetailService: UserDetailService,
+    private val userRoleService: UserRoleService,
+    private val userCredentialService: UserCredentialService
+) {
     private val logger = LoggerFactory.getLogger(UserController::class.java)
 
     @GetMapping("/{id}")
@@ -37,7 +47,7 @@ class UserController(private val userService: UserService) {
     @PostMapping
     fun createUser(@RequestBody user: UserCreateDTO): ResponseEntity<User> {
         logger.info("Request for creating user: ${user.username}")
-        // TODO: move user creation logic to service and implement password hashing
+        val regularRole: UserRole = userRoleService.findByName("USER") ?: throw IllegalArgumentException("User role not found")
         val newUser = User(
             username = user.username,
             email = user.email,
@@ -56,9 +66,20 @@ class UserController(private val userService: UserService) {
                 phoneNumber = null,
                 profilePicture = null,
                 zipCode = null
-            )
+            ),
+            role = regularRole
         )
         val createdUser = userService.save(newUser)
+        userCredentialService.save(
+            UserCredential(
+                userId = createdUser.id,
+                password = user.password,
+                isTemporal = false,
+                isActive = true,
+                validToDateTime = null,
+                createdAt = LocalDateTime.now(),
+            )
+        )
         return ResponseEntity.ok(createdUser)
     }
 

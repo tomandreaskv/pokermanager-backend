@@ -1,6 +1,16 @@
 
 CREATE SCHEMA IF NOT EXISTS pokerman;
 -- create tables with indexes and foreign keys
+
+CREATE TABLE pokerman.roles (
+    id BIGSERIAL PRIMARY KEY,
+    role_name VARCHAR(255) NOT NULL UNIQUE,
+    description VARCHAR(255) NOT NULL
+);
+
+CREATE INDEX idx_roles_id ON pokerman.roles (id);
+CREATE INDEX idx_roles_name ON pokerman.roles (role_name);
+
 CREATE TABLE pokerman.users (
     id BIGSERIAL PRIMARY KEY,
     is_admin BOOLEAN,
@@ -8,7 +18,9 @@ CREATE TABLE pokerman.users (
     updated_at TIMESTAMP(6),
     email VARCHAR(255),
     password VARCHAR(255),
-    username VARCHAR(255)
+    username VARCHAR(255),
+    role_id BIGINT NOT NULL,
+    CONSTRAINT fk_user_role_id FOREIGN KEY (role_id) REFERENCES pokerman.roles (id)
 );
 
 CREATE INDEX idx_users_username ON pokerman.users (username);

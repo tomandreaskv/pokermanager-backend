@@ -48,7 +48,7 @@ class LevelServiceImpl(private val levelRepository: LevelRepository) : LevelServ
         return when (level) {
             is BlindLevel -> BlindLevelDTO(
                 level.id,
-                level.blindStructureId,
+                level.blindStructure,
                 level.levelOrder,
                 level.duration,
                 level.smallBlind,
@@ -57,7 +57,7 @@ class LevelServiceImpl(private val levelRepository: LevelRepository) : LevelServ
             )
             is BreakLevel -> BreakLevelDTO(
                 level.id,
-                level.blindStructureId,
+                level.blindStructure,
                 level.levelOrder,
                 level.duration,
                 level.colorUp
@@ -68,7 +68,7 @@ class LevelServiceImpl(private val levelRepository: LevelRepository) : LevelServ
 
     private fun createBlindLevel(dto: CreateLevelDTO): BlindLevel {
         return BlindLevel(
-            blindStructureId = dto.blindStructureId,
+            blindStructure = dto.blindStructureId,
             levelOrder = dto.level,
             duration = dto.duration,
             smallBlind = dto.smallBlind!!,
@@ -79,7 +79,7 @@ class LevelServiceImpl(private val levelRepository: LevelRepository) : LevelServ
 
     private fun createBreakLevel(dto: CreateLevelDTO): BreakLevel {
         return BreakLevel(
-            blindStructureId = dto.blindStructureId,
+            blindStructure = dto.blindStructureId,
             levelOrder = dto.level,
             duration = dto.duration,
             colorUp = dto.colorUp!!

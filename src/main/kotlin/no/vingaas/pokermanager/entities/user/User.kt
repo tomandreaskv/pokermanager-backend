@@ -32,5 +32,9 @@ data class User(
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "user_detail_id", referencedColumnName = "id")
-    val userDetail: UserDetail
+    val userDetail: UserDetail,
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    val role: UserRole
 )

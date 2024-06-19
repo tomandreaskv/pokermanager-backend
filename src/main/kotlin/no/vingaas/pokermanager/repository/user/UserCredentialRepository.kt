@@ -12,5 +12,4 @@ interface UserCredentialRepository : JpaRepository<UserCredential, Long> {
     @Query("select u from UserCredential u where u.userId = ?1 and u.isActive = true")
     fun findByUserId(userId: Long): Optional<UserCredential>
 
-    fun findByUserUsername(username: String): UserCredential?
 }

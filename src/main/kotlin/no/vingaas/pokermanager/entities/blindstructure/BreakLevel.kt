@@ -7,10 +7,10 @@ import jakarta.persistence.*
 data class BreakLevel(
     override val id: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
-    override val blindStructureId: Long,
+    override val blindStructure: BlindStructure,
     override val levelOrder: Int,
     override val duration: Int,
 
     @Column(name = "color_up", nullable = false)
     val colorUp: Boolean
-) : Level(id, blindStructureId, levelOrder, duration)
+) : Level(id, blindStructure, levelOrder, duration)

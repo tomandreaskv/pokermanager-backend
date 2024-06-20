@@ -1,6 +1,9 @@
 package no.vingaas.pokermanager.controller.user
 
 import no.vingaas.pokermanager.entities.user.User
+import no.vingaas.pokermanager.service.user.UserCredentialService
+import no.vingaas.pokermanager.service.user.UserDetailService
+import no.vingaas.pokermanager.service.user.UserRoleService
 import no.vingaas.pokermanager.service.user.UserService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -17,6 +20,9 @@ import java.time.LocalDateTime
 class UserControllerTest {
 
     private var userService: UserService = mock(UserService::class.java)
+    private var userDetailService: UserDetailService = mock(UserDetailService::class.java)
+    private var userRoleService: UserRoleService = mock(UserRoleService::class.java)
+    private var userCredentialService : UserCredentialService  = mock(UserCredentialService::class.java)
 
     @InjectMocks
     private lateinit var userController: UserController
@@ -26,7 +32,7 @@ class UserControllerTest {
 
     @BeforeEach
     fun setUp() {
-        userController = UserController(userService)
+        userController = UserController(userService,userDetailService,userRoleService,userCredentialService)
         user = User(
             id = 1L,
             username = "testuser",
@@ -35,7 +41,9 @@ class UserControllerTest {
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now(),
             adminPermissions = listOf(),
-            userDetail = mock()
+            userDetail = mock(),
+            role = mock()
+
         )
 
         user2 = User(
@@ -46,7 +54,8 @@ class UserControllerTest {
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now(),
             adminPermissions = listOf(),
-            userDetail = mock()
+            userDetail = mock(),
+            role = mock()
         )
     }
 

@@ -1,5 +1,6 @@
 package no.vingaas.pokermanager.config
 
+import io.jsonwebtoken.ExpiredJwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -32,15 +33,28 @@ class JwtAuthenticationFilter(
         }
 
         val jwtToken = authHeader!!.extractJwtToken()
-        val email = tokenService.extractEmail(jwtToken)
+        try {
+            val email = tokenService.extractEmail(jwtToken)
 
-        if(email != null && SecurityContextHolder.getContext().authentication == null){
-            val foundUser = userDetailsService.loadUserByUsername(email)
-            if(tokenService.isValid(jwtToken, foundUser)){
-                updateSecurityContext(foundUser, request)
+            if (email != null && SecurityContextHolder.getContext().authentication == null) {
+                val foundUser = userDetailsService.loadUserByUsername(email)
+                if (tokenService.isValid(jwtToken, foundUser)) {
+                    updateSecurityContext(foundUser, request)
+                }
             }
-            filterChain.doFilter(request, response)
+        } catch (ex: ExpiredJwtException) {
+            logger.warn("Expired JWT token")
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
+            response.writer.write("Token has expired")
+            return
+        } catch (ex: Exception) {
+            logger.error("JWT token processing error")
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
+            response.writer.write("Invalid token")
+            return
         }
+
+        filterChain.doFilter(request, response)
     }
 
     private fun updateSecurityContext(foundUser: UserDetails, request: HttpServletRequest) {

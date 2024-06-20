@@ -20,13 +20,15 @@ class SecurityConfiguration(private val daoAuthenticationProvider: DaoAuthentica
             .csrf{ it.disable() }
             .authorizeHttpRequests{
                 it
-                    .requestMatchers("/api/auth", "/api/auth/refresh", "/error")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/users")
-                    .permitAll()
-                    .requestMatchers("/api/**")
-                    .hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/users").authenticated()
+                    // Allow access to these endpoints without authentication
+                    .requestMatchers("/api/auth", "/api/auth/refresh", "/error").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+
+                    // Allow access to these endpoints with user role
+                    .requestMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/tournaments/public").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/tournaments/private/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/tournaments/created/**").hasAnyRole("USER", "ADMIN")
                     .anyRequest()
                     .fullyAuthenticated()
             }

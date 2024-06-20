@@ -12,8 +12,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import java.time.LocalDateTime
 import java.util.*
@@ -34,20 +33,19 @@ class BlindStructureServiceImplTest{
         createdAt = LocalDateTime.now(),
         updatedAt = LocalDateTime.now(),
         adminPermissions = listOf(),
-        userDetail = Mockito.mock()
+        userDetail = Mockito.mock(),
+        role = Mockito.mock()
     )
-    private val dummyBlindStructure = BlindStructure(
+    private val dummyBlindLevel  = BlindLevel(id = 1, blindStructure = mock() , levelOrder = 1, duration = 10, smallBlind = 10, bigBlind = 20, ante = 5)
+
+     private var dummyBlindStructure = BlindStructure(
         id = 1,
         name = "Test Structure",
-        levels = listOf(
-            BlindLevel(id = 1, blindStructure = 1, levelOrder = 1, duration = 10, smallBlind = 10, bigBlind = 20, ante = 5)
-        ),
+        levels = listOf(dummyBlindLevel),
         createdBy = dummyUser,
         createdAt = LocalDateTime.now(),
         updatedAt = LocalDateTime.now()
     )
-
-
     @Test
     fun `test getBlindStructureWithId success`() {
         `when`(blindStructureRepository.findById(1L)).thenReturn(Optional.of(dummyBlindStructure))

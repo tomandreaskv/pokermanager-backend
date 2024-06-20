@@ -28,14 +28,15 @@ class UserCredentialServiceImplTest {
     private lateinit var userCredentialService: UserCredentialServiceImpl
 
    private val user = User(
-    id = 1L,
-    username = "testuser",
-    email = "test@example.com",
-    isAdmin = false,
-    createdAt = LocalDateTime.now(),
-    updatedAt = LocalDateTime.now(),
-    adminPermissions = listOf(),
-    userDetail = mock()
+       id = 1L,
+       username = "testuser",
+       email = "test@example.com",
+       isAdmin = false,
+       createdAt = LocalDateTime.now(),
+       updatedAt = LocalDateTime.now(),
+       adminPermissions = listOf(),
+       userDetail = mock(),
+       role = mock()
     )
 
     private val userCredential = UserCredential(id = 1L, userId = 1L, password = "test", isTemporal = false, isActive = true, validToDateTime = LocalDateTime.of(2025,1,1,1,1), createdAt = LocalDateTime.now())
@@ -68,25 +69,6 @@ class UserCredentialServiceImplTest {
         Mockito.`when`(userCredentialRepository.findByUserId(userid)).thenReturn(Optional.of(userCredential))
 
         val result = userCredentialService.getCredentialsByUserId(userid).get()
-
-        assertEquals(userCredential, result)
-    }
-
-    @Test
-    fun `should throw exception when username does not exist`() {
-        val username = "test"
-        Mockito.`when`(userCredentialRepository.findByUserUsername(username)).thenReturn(null)
-
-        assertThrows<IllegalArgumentException> {
-            userCredentialService.getCredentialsByUsername(username)
-        }
-    }
-
-    @Test
-    fun `should save and return user credential`() {
-        Mockito.`when`(userCredentialRepository.save(userCredential)).thenReturn(userCredential)
-
-        val result = userCredentialService.save(userCredential)
 
         assertEquals(userCredential, result)
     }

@@ -4,6 +4,7 @@ import no.vingaas.pokermanager.dto.blindstructure.BlindLevelDTO
 import no.vingaas.pokermanager.dto.blindstructure.BreakLevelDTO
 import no.vingaas.pokermanager.dto.blindstructure.CreateLevelDTO
 import no.vingaas.pokermanager.entities.blindstructure.BlindLevel
+import no.vingaas.pokermanager.entities.blindstructure.BlindStructure
 import no.vingaas.pokermanager.entities.blindstructure.BreakLevel
 import no.vingaas.pokermanager.repository.blindstructure.LevelRepository
 import org.junit.jupiter.api.AfterEach
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentCaptor
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
@@ -30,7 +30,7 @@ class LevelServiceImplTest {
 
     private val dummyBlindLevel = BlindLevel(
         id = 1L,
-        blindStructure = 1L,
+        blindStructure = mock(BlindStructure::class.java),
         levelOrder = 1,
         duration = 10,
         smallBlind = 10,
@@ -39,14 +39,14 @@ class LevelServiceImplTest {
     )
     private val dummyBreakLevel = BreakLevel(
         id = 2L,
-        blindStructure = 1L,
+        blindStructure = mock(BlindStructure::class.java),
         levelOrder = 2,
         duration = 5,
         colorUp = true
     )
     private val dummyBlindLevelDTO = BlindLevelDTO(
         id = 1L,
-        blindStructure = 1L,
+        blindStructure = mock(BlindStructure::class.java),
         levelOrder = 1,
         duration = 10,
         smallBlind = 10,
@@ -55,14 +55,14 @@ class LevelServiceImplTest {
     )
     private val dummyBreakLevelDTO = BreakLevelDTO(
         id = 2L,
-        blindStructure = 1L,
+        blindStructure = mock(BlindStructure::class.java),
         levelOrder = 2,
         duration = 5,
         colorUp = true
     )
     private val createBlindLevelDTO = CreateLevelDTO(
         type = "blind",
-        blindStructureId = 1L,
+        blindStructureId = mock(BlindStructure::class.java),
         level = 1,
         duration = 10,
         smallBlind = 10,
@@ -72,7 +72,7 @@ class LevelServiceImplTest {
     )
     private val createBreakLevelDTO = CreateLevelDTO(
         type = "break",
-        blindStructureId = 1L,
+        blindStructureId = mock(BlindStructure::class.java),
         level = 2,
         duration = 5,
         smallBlind = null,
@@ -121,7 +121,7 @@ class LevelServiceImplTest {
     @Test
     fun `test createBlindLevel success`() {
         val levelCaptor = ArgumentCaptor.forClass(BlindLevel::class.java)
-        `when`(levelRepository.save(Mockito.any(BlindLevel::class.java))).thenReturn(dummyBlindLevel)
+        `when`(levelRepository.save(any(BlindLevel::class.java))).thenReturn(dummyBlindLevel)
 
         val result = levelServiceImpl.createLevel(dummyBlindLevel)
 
@@ -139,7 +139,7 @@ class LevelServiceImplTest {
     @Test
     fun `test createBreakLevel success`() {
         val levelCaptor = ArgumentCaptor.forClass(BreakLevel::class.java)
-        `when`(levelRepository.save(Mockito.any(BreakLevel::class.java))).thenReturn(dummyBreakLevel)
+        `when`(levelRepository.save(any(BreakLevel::class.java))).thenReturn(dummyBreakLevel)
 
         var result = levelServiceImpl.createLevel(dummyBreakLevel)
 
@@ -155,7 +155,7 @@ class LevelServiceImplTest {
     @Test
     fun `test updateBlindLevel success`() {
         `when`(levelRepository.findById(1L)).thenReturn(Optional.of(dummyBlindLevel))
-        `when`(levelRepository.save(Mockito.any(BlindLevel::class.java))).thenReturn(dummyBlindLevel)
+        `when`(levelRepository.save(any(BlindLevel::class.java))).thenReturn(dummyBlindLevel)
 
         val result = levelServiceImpl.updateLevel(dummyBlindLevel)
 
@@ -167,7 +167,7 @@ class LevelServiceImplTest {
     @Test
     fun `test updateBreakLevel success`() {
         `when`(levelRepository.findById(2L)).thenReturn(Optional.of(dummyBreakLevel))
-        `when`(levelRepository.save(Mockito.any(BreakLevel::class.java))).thenReturn(dummyBreakLevel)
+        `when`(levelRepository.save(any(BreakLevel::class.java))).thenReturn(dummyBreakLevel)
 
         val result = levelServiceImpl.updateLevel(dummyBreakLevel)
 

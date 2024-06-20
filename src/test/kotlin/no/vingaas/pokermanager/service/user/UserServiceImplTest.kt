@@ -35,7 +35,8 @@ class UserServiceImplTest {
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now(),
             adminPermissions = listOf(),
-            userDetail = mock()
+            userDetail = mock(),
+            role = mock()
         )
 
     }
@@ -135,12 +136,12 @@ class UserServiceImplTest {
 
     @Test
     fun `test findAll`() {
-        `when`(userRepository.findAll()).thenReturn(listOf(user))
+        `when`(userRepository.findAllUsers()).thenReturn(listOf(user))
 
         val users = userService.findAll()
 
         assertEquals(1, users.size)
-        verify(userRepository, times(1)).findAll()
+        verify(userRepository, times(1)).findAllUsers()
     }
 
     @Test

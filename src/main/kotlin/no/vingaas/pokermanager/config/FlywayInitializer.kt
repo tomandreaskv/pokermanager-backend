@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 import java.sql.DriverManager
-import java.util.concurrent.TimeUnit
 
 @Component
 class FlywayInitializer(private val environment: Environment) {
@@ -45,7 +44,7 @@ class FlywayInitializer(private val environment: Environment) {
                     logger.warn("Database start attempt exceeded 10 times...")
                 }
                 logger.info("Waiting for database... attempt: $attempts")
-                TimeUnit.SECONDS.sleep(5)
+                Thread.sleep(5000)
             }
         }
         logger.error("Database did not start after 30 attempts")

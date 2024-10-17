@@ -11,6 +11,11 @@ class CustomUserDetails(
     private val userCredential: UserCredential  // Koble UserCredential-entiteten
 ) : UserDetails {
 
+    val isAdmin: Boolean
+        get() {
+            return user.isAdmin
+        }
+
     // Returnerer brukerens ID
     fun getId(): Long {
         return user.id
@@ -26,7 +31,7 @@ class CustomUserDetails(
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
         // Returner brukerens roller eller autoriteter (kan hente fra UserRole)
-        return listOf(SimpleGrantedAuthority(user.role.name))
+        return listOf(SimpleGrantedAuthority("ROLE_" + user.role.name))
     }
 
     override fun isAccountNonExpired(): Boolean = true

@@ -38,7 +38,6 @@ class SecurityConfiguration(private val daoAuthenticationProvider: DaoAuthentica
 
                     // Allow access to ranking-related endpoints with user role
                     .requestMatchers("/api/ranking/**").hasAnyRole("USER", "ADMIN")
-
                     // Allow access to admin-related endpoints with admin role only
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
 

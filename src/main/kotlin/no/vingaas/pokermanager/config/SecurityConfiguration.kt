@@ -24,13 +24,26 @@ class SecurityConfiguration(private val daoAuthenticationProvider: DaoAuthentica
                     .requestMatchers("/api/auth", "/api/auth/refresh", "/error").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
 
-                    // Allow access to these endpoints with user role
-                    .requestMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/tournaments/public").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/tournaments/private/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/tournaments/created/**").hasAnyRole("USER", "ADMIN")
-                    .anyRequest()
-                    .fullyAuthenticated()
+                    // Allow access to user-related endpoints with user role
+                    .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
+
+                    // Allow access to tournament-related endpoints with user role
+                    .requestMatchers("/api/tournaments/**").hasAnyRole("USER", "ADMIN")
+
+                    // Allow access to equipment-related endpoints with user role
+                    .requestMatchers("/api/equipments/**").hasAnyRole("USER", "ADMIN")
+
+                    // Allow access to blind structure-related endpoints with user role
+                    .requestMatchers("/api/blindstructure/**").hasAnyRole("USER", "ADMIN")
+
+                    // Allow access to ranking-related endpoints with user role
+                    .requestMatchers("/api/ranking/**").hasAnyRole("USER", "ADMIN")
+
+                    // Allow access to admin-related endpoints with admin role only
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                    // All other requests need to be authenticated
+                    .anyRequest().authenticated()
             }
             .sessionManagement{
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

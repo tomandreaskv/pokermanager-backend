@@ -42,6 +42,11 @@ class UserServiceImpl(private val userRepository: UserRepository, private val va
         return saveOrUpdateUser(user, "Updating")
     }
 
+    override fun getUserByEmail(email: String): User {
+        logger.info("Finding user by email: $email")
+        return userRepository.findByEmail(email) ?: throw IllegalArgumentException("User not found")
+    }
+
     @Transactional
     override fun delete(user: User) {
         logger.info("Deleting user: ${user.username}")

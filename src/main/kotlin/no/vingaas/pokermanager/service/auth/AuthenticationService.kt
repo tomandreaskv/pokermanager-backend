@@ -8,5 +8,9 @@ import org.springframework.stereotype.Service
 interface AuthenticationService {
 
     fun authenticate(request: AuthenticationRequest): AuthenticationResponse
+    fun refreshToken(token: String): AuthenticationResponse?
+    fun invalidateToken(jti: String)
+
+    fun logout(token: String)
 
 }

@@ -12,4 +12,5 @@ interface UserService {
     fun findAll(): List<User>
     fun findById(id: Long): User?
     fun update(user: User): User
+    fun getUserByEmail(email: String): User
 }

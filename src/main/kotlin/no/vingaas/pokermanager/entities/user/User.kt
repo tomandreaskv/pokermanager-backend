@@ -11,6 +11,7 @@ data class User(
     val id: Long = 0,
 
     val username: String,
+    @Column(name = "email", unique = true)
     val email: String,
 
     @Column(name = "is_admin")

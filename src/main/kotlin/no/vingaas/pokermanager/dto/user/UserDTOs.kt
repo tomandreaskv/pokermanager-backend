@@ -27,3 +27,10 @@ data class FullUserDTO(
     val isAdmin: Boolean,
     val role: String
 )
+
+data class UpdateUserRoleDTO(
+    val userId: Long,
+    val username: String,
+    val oldRole: String,
+    val newRole: String
+)

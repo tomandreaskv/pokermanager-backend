@@ -2,6 +2,7 @@ package no.vingaas.pokermanager.service.user
 
 import jakarta.transaction.Transactional
 import no.vingaas.pokermanager.entities.user.User
+import no.vingaas.pokermanager.entities.user.UserRole
 import no.vingaas.pokermanager.exception.user.InvalidUserException
 import no.vingaas.pokermanager.repository.user.UserRepository
 import no.vingaas.pokermanager.validator.user.UserValidator
@@ -9,7 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl(private val userRepository: UserRepository, private val validator: UserValidator) : UserService  {
+class UserServiceImpl(private val userRepository: UserRepository, private val validator: UserValidator, private val userRoleService: UserRoleService) : UserService  {
     private val logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
     override fun findByUsername(username: String): User? {
@@ -72,5 +73,18 @@ class UserServiceImpl(private val userRepository: UserRepository, private val va
             throw InvalidUserException("Invalid user data: ${errors.joinToString(", ")}")
         }
         return userRepository.save(user)
+    }
+
+    override fun updateRole(userId: Long, newRoleName: String): User {
+        val user = findById(userId) ?: throw IllegalArgumentException("User not found")
+        val newRole = userRoleService.findByName(newRoleName)
+            ?: throw IllegalArgumentException("Role not found")
+
+        val updatedUser = user.copy(role = newRole)
+        return userRepository.save(updatedUser)
+    }
+
+    override fun updateUserRole(user: User, newRole: UserRole) {
+        userRepository.save(user.copy(role = newRole))
     }
 }

@@ -1,9 +1,7 @@
 package no.vingaas.pokermanager.entities.tournament
 
 import jakarta.persistence.*
-import no.vingaas.pokermanager.entities.blindstructure.BlindStructure
 import no.vingaas.pokermanager.entities.common.Status
-import no.vingaas.pokermanager.entities.stack.StartingStack
 import no.vingaas.pokermanager.entities.user.User
 import java.time.LocalDateTime
 
@@ -28,13 +26,13 @@ data class Tournament(
     val status: Status,
 
     @Column(name = "scheduled_start_time")
-    val scheduledStartTime: LocalDateTime?,
+    val scheduledStartTime: LocalDateTime?  = null,
 
     @Column(name = "actual_start_time")
-    val actualStartTime: LocalDateTime?,
+    val actualStartTime: LocalDateTime?  = null,
 
     @Column(name = "end_time")
-    val endTime: LocalDateTime?,
+    val endTime: LocalDateTime?  = null,
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)
@@ -42,13 +40,16 @@ data class Tournament(
 
     @ManyToOne
     @JoinColumn(name = "series_id")
-    val series: Series?,
+    val series: Series? = null,
 
     @Column( name = "created_at", nullable = false)
     val createdAt: LocalDateTime,
 
     @Column(name = "updated_at", nullable = false)
     val updatedAt: LocalDateTime,
+
+    @Enumerated(EnumType.STRING)
+    val visibility: TournamentVisibility = TournamentVisibility.PUBLIC,
 
     @ManyToMany
     @JoinTable(

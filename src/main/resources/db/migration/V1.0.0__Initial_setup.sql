@@ -41,6 +41,16 @@ CREATE TABLE pokerman.statuses (
 
 CREATE INDEX idx_statuses_status_name ON pokerman.statuses (status_name);
 
+-- Sett inn forhåndsdefinerte statusverdier
+INSERT INTO pokerman.statuses (description, status_name)
+VALUES
+('Turneringen er opprettet, men ikke publisert.','DRAFT'),
+('Turneringen er planlagt', 'SCHEDULED'),
+('Turneringen pågår', 'ONGOING'),
+('Turneringen er avsluttet', 'COMPLETED'),
+('Turneringen er kansellert', 'CANCELLED'),
+('Turneringen er satt på pause', 'PAUSED');
+
 CREATE TABLE pokerman.blind_structures (
     id BIGSERIAL PRIMARY KEY,
     created_at TIMESTAMP(6) NOT NULL,
@@ -157,6 +167,7 @@ CREATE TABLE pokerman.tournaments (
     updated_at TIMESTAMP(6) NOT NULL,
     description VARCHAR(255),
     tournament_name VARCHAR(255) NOT NULL,
+    visibility VARCHAR(255) NOT NULL,
     CONSTRAINT fk_tournaments_created_by FOREIGN KEY (created_by) REFERENCES pokerman.users (id),
     CONSTRAINT fk_tournaments_specification_id FOREIGN KEY (specification_id) REFERENCES pokerman.tournament_specification (id),
     CONSTRAINT fk_tournaments_status_id FOREIGN KEY (status_id) REFERENCES pokerman.statuses (id)

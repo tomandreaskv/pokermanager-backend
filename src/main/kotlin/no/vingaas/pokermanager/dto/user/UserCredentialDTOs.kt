@@ -9,3 +9,12 @@ data class UserCredentialDTO(
     val isActive: Boolean = true,
     val validToDateTime: LocalDateTime? = null
 )
+
+data class UpdatePasswordDTO(
+    val oldPassword: String,
+    val newPassword: String
+)
+
+data class ForgotPasswordDTO(
+    val email: String
+)

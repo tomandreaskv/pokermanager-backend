@@ -1,6 +1,7 @@
 package no.vingaas.pokermanager.service.user
 
 import no.vingaas.pokermanager.entities.user.User
+import no.vingaas.pokermanager.entities.user.UserRole
 
 interface UserService {
     fun findByUsername(username: String): User?
@@ -13,4 +14,7 @@ interface UserService {
     fun findById(id: Long): User?
     fun update(user: User): User
     fun getUserByEmail(email: String): User
+    fun updateRole(userId: Long, newRoleName: String): User
+
+    fun updateUserRole(user: User, newRole: UserRole)
 }

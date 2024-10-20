@@ -47,6 +47,8 @@ dependencies {
 	testImplementation("org.testcontainers:postgresql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+	testImplementation("com.h2database:h2")
+
 
 	// Mockito dependencies
 	testImplementation("org.mockito:mockito-core:5.12.0")

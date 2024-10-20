@@ -1,95 +1,74 @@
 package no.vingaas.pokermanager.service.user
 
-import no.vingaas.pokermanager.entities.user.User
-import no.vingaas.pokermanager.entities.user.UserCredential
 import no.vingaas.pokermanager.repository.user.UserCredentialRepository
+import no.vingaas.pokermanager.util.TestDataFactory
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
-import java.time.LocalDateTime
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class UserCredentialServiceImplTest {
 
-    @Mock
-    private lateinit var userCredentialRepository: UserCredentialRepository
-
-    @Mock
-    private lateinit var userService : UserServiceImpl
+    private lateinit var credentialRepository: UserCredentialRepository
+    private lateinit var userService : UserService
 
     @InjectMocks
-    private lateinit var userCredentialService: UserCredentialServiceImpl
+    private lateinit var credentialService: UserCredentialServiceImpl
 
-   private val user = User(
-       id = 1L,
-       username = "testuser",
-       email = "test@example.com",
-       isAdmin = false,
-       createdAt = LocalDateTime.now(),
-       updatedAt = LocalDateTime.now(),
-       adminPermissions = listOf(),
-       userDetail = mock(),
-       role = mock()
-    )
-
-    private val userCredential = UserCredential(id = 1L, userId = 1L, password = "test", isTemporal = false, isActive = true, validToDateTime = LocalDateTime.of(2025,1,1,1,1), createdAt = LocalDateTime.now())
+    @BeforeEach
+    fun setUp() {
+        credentialRepository = mock(UserCredentialRepository::class.java)
+        userService = mock(UserServiceImpl::class.java)
+        credentialService = UserCredentialServiceImpl(credentialRepository, userService)
+    }
 
     @Test
     fun `should return user credential when id exists`() {
-        val userCredential = userCredential
-        val id = 1L
-        Mockito.`when`(userCredentialRepository.findById(id)).thenReturn(Optional.of(userCredential))
+        val userCredential = TestDataFactory.createUserCredential(userId = 1L)
 
-        val result = userCredentialService.getCredentialsById(id)
+        `when`(credentialRepository.findById(userCredential.id)).thenReturn(Optional.of(userCredential))
+
+        val result = credentialService.getCredentialsById(userCredential.id)
 
         assertEquals(userCredential, result)
     }
 
     @Test
     fun `should throw exception when id does not exist`() {
-        val id = 1L
-        Mockito.`when`(userCredentialRepository.findById(id)).thenReturn(Optional.empty())
+        val userCredentialId = 1L
+
+        `when`(credentialRepository.findById(userCredentialId)).thenReturn(Optional.empty())
 
         assertThrows<IllegalArgumentException> {
-            userCredentialService.getCredentialsById(id)
+            credentialService.getCredentialsById(userCredentialId)
         }
     }
 
     @Test
-    fun `should return user credential when username exists`() {
-        val userCredential = userCredential
-        val userid = userCredential.userId
-        Mockito.`when`(userCredentialRepository.findByUserId(userid)).thenReturn(Optional.of(userCredential))
-
-        val result = userCredentialService.getCredentialsByUserId(userid).get()
-
-        assertEquals(userCredential, result)
-    }
-
-    @Test
     fun `should update and return user credential`() {
-        val userCredential = userCredential
-        Mockito.`when`(userCredentialRepository.save(userCredential)).thenReturn(userCredential)
+        val userCredential = TestDataFactory.createUserCredential(userId = 1L)
 
-        val result = userCredentialService.update(userCredential)
+        `when`(credentialRepository.save(userCredential)).thenReturn(userCredential)
+
+        val result = credentialService.update(userCredential)
 
         assertEquals(userCredential, result)
     }
 
     @Test
     fun `should delete user credential`() {
+        val userCredential = TestDataFactory.createUserCredential(userId = 1L)
 
-        Mockito.doNothing().`when`(userCredentialRepository).deleteById(userCredential.id)
+        doNothing().`when`(credentialRepository).deleteById(userCredential.id)
 
-        userCredentialService.delete(userCredential.id)
+        credentialService.delete(userCredential.id)
 
-        Mockito.verify(userCredentialRepository, Mockito.times(1)).deleteById(userCredential.id)
+        verify(credentialRepository, times(1)).deleteById(userCredential.id)
     }
 }

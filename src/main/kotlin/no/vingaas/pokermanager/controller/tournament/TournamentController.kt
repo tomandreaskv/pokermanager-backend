@@ -13,30 +13,34 @@ import java.net.URI
 
 @RestController
 @RequestMapping("/api/tournaments")
-class TournamentController (
+class TournamentController(
     private val tournamentService: TournamentService,
-    private val userService: UserService  // For å hente brukeren som er autentisert
+    private val userService: UserService
 ) {
     private val logger = LoggerFactory.getLogger(TournamentController::class.java)
+
+    // Hjelpemetode for å hente innlogget bruker
+    private fun getCurrentUser(authentication: Authentication) =
+        userService.getUserByEmail(authentication.name)
 
     // Opprettelse av ny turnering
     @PostMapping
     fun createTournament(
         @RequestBody createTournamentDTO: CreateTournamentDTO,
-        authentication: Authentication  // Dette henter innlogget bruker
+        authentication: Authentication
     ): ResponseEntity<Tournament> {
         logger.info("Request to create tournament: ${createTournamentDTO.tournamentName}")
 
-        val currentUser = userService.getUserByEmail(authentication.name)  // Få den autentiserte brukeren
+        val currentUser = getCurrentUser(authentication)
         val createdTournament = tournamentService.createTournament(createTournamentDTO, currentUser)
 
         return ResponseEntity.created(URI.create("/api/tournaments/${createdTournament.id}")).body(createdTournament)
     }
 
-    // Hent alle turneringer
+    // Hent alle tilgjengelige turneringer for brukeren
     @GetMapping
     fun getAccessibleTournaments(authentication: Authentication): ResponseEntity<List<Tournament>> {
-        val currentUser = userService.getUserByEmail(authentication.name)
+        val currentUser = getCurrentUser(authentication)
         val accessibleTournaments = tournamentService.getAccessibleTournaments(currentUser)
         return ResponseEntity.ok(accessibleTournaments)
     }
@@ -58,7 +62,7 @@ class TournamentController (
     ): ResponseEntity<Tournament> {
         logger.info("Request to update tournament with id: $id")
 
-        val currentUser = userService.getUserByEmail(authentication.name)
+        val currentUser = getCurrentUser(authentication)
         val updatedTournament = tournamentService.updateTournament(id, updateTournamentDTO, currentUser)
 
         return ResponseEntity.ok(updatedTournament)

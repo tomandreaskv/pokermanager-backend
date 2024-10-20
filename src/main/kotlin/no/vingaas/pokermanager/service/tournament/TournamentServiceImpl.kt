@@ -3,25 +3,60 @@ package no.vingaas.pokermanager.service.tournament
 import no.vingaas.pokermanager.dto.tournament.CreateTournamentDTO
 import no.vingaas.pokermanager.dto.tournament.UpdateTournamentDTO
 import no.vingaas.pokermanager.entities.tournament.Tournament
+import no.vingaas.pokermanager.entities.tournament.TournamentSpecification
 import no.vingaas.pokermanager.entities.tournament.TournamentVisibility
 import no.vingaas.pokermanager.entities.user.User
+import no.vingaas.pokermanager.exception.user.NoSuchTournamentTypeException
+import no.vingaas.pokermanager.repository.blindstructure.BlindStructureRepository
+import no.vingaas.pokermanager.repository.common.StatusRepository
+import no.vingaas.pokermanager.repository.stack.StartingStackRepository
 import no.vingaas.pokermanager.repository.tournament.TournamentRepository
+import no.vingaas.pokermanager.repository.tournament.TournamentTypeRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class TournamentServiceImpl(
-    private val tournamentRepository: TournamentRepository
+    private val tournamentRepository: TournamentRepository,
+    private val tournamentTypeRepository: TournamentTypeRepository,
+    private val statusRepository: StatusRepository,
+    private val blindStructureRepository: BlindStructureRepository,
+    private val startingStackRepository: StartingStackRepository
+
 ): TournamentService {
     private val logger = LoggerFactory.getLogger(TournamentServiceImpl::class.java)
 
     override fun createTournament(createTournamentDTO: CreateTournamentDTO, createdBy: User): Tournament {
+        // Hvis nødvendig informasjon mangler, sett turneringen til DRAFT-status
+        val status = if (createTournamentDTO.scheduledStartTime == null || createTournamentDTO.buyIn == null) {
+            statusRepository.findByName("DRAFT").orElseThrow { IllegalArgumentException("DRAFT status not found") }
+        } else {
+            statusRepository.findByName("SCHEDULED").orElseThrow { IllegalArgumentException("SCHEDULED status not found") }
+        }
+
+        // Hent TournamentType hvis id er gitt
+        val tournamentType = createTournamentDTO.tournamentTypeId?.let {
+            tournamentTypeRepository.findById(it).orElseThrow {
+                NoSuchTournamentTypeException("Tournament type with ID ${createTournamentDTO.tournamentTypeId} does not exist.")
+            }
+        }
+
+        // Bygg TournamentSpecification
+        val tournamentSpecification = TournamentSpecification(
+            buyIn = createTournamentDTO.buyIn ?: 0.0,  // Standardverdi hvis ikke oppgitt
+            blindStructure = createTournamentDTO.blindStructureId?.let { blindStructureRepository.findById(it).orElse(null) },
+            startingStack = createTournamentDTO.startingStackId?.let { startingStackRepository.findById(it).orElse(null) },
+            freeToPlay = createTournamentDTO.freeToPlay ?: false,  // Set standardverdi hvis ikke oppgitt
+            tournamentType = tournamentType ?: throw IllegalArgumentException("TournamentType is required")
+        )
+
+        // Bygg Tournament med den opprettede spesifikasjonen
         val tournament = Tournament(
             tournamentName = createTournamentDTO.tournamentName,
             description = createTournamentDTO.description,
-            specification = createTournamentDTO.specification,
-            status = createTournamentDTO.status,
+            specification = tournamentSpecification,
+            status = status,
             scheduledStartTime = createTournamentDTO.scheduledStartTime,
             createdBy = createdBy,
             createdAt = LocalDateTime.now(),
@@ -29,7 +64,7 @@ class TournamentServiceImpl(
             visibility = createTournamentDTO.visibility
         )
 
-        logger.info("Creating new tournament: ${createTournamentDTO.tournamentName}")
+        // Lagre turneringen i databasen
         return tournamentRepository.save(tournament)
     }
 

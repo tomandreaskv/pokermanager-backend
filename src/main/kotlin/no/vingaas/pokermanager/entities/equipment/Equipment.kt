@@ -1,6 +1,7 @@
 package no.vingaas.pokermanager.entities.equipment
 
 import jakarta.persistence.*
+import no.vingaas.pokermanager.entities.user.User
 import java.time.LocalDateTime
 
 @Entity
@@ -19,6 +20,10 @@ open class Equipment(
     @ManyToOne
     @JoinColumn(name = "equipment_type_id", nullable = false)
     open val equipmentType: EquipmentType,
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    open val createdBy: User?,  // Optional eier
 
     @Column(name = "created_at", nullable = false)
     open val createdAt: LocalDateTime,

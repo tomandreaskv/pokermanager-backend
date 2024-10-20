@@ -81,8 +81,16 @@ CREATE TABLE pokerman.tournament_types (
 
 CREATE INDEX idx_tournament_types_type_name ON pokerman.tournament_types (type_name);
 
+INSERT INTO pokerman.equipment_types (description, type_name)
+VALUES
+('A set of poker chips used for games', 'Chip Set'),
+('A poker table used during tournaments or casual games', 'Poker Table'),
+('Chairs used by players at a poker table', 'Chair'),
+('Other miscellaneous equipment used during poker games', 'Miscellaneous');
+
 CREATE TABLE pokerman.equipments (
     id BIGSERIAL PRIMARY KEY,
+    created_by BIGINT, -- Valgfri referanse til brukeren som opprettet settet
     created_at TIMESTAMP(6) NOT NULL,
     equipment_type_id BIGINT NOT NULL,
     updated_at TIMESTAMP(6) NOT NULL,
@@ -92,6 +100,7 @@ CREATE TABLE pokerman.equipments (
 );
 
 CREATE INDEX idx_equipments_equipment_name ON pokerman.equipments (equipment_name);
+CREATE INDEX idx_equipments_created_by ON pokerman.equipments (created_by);
 
 CREATE TABLE pokerman.chip_sets (
     id BIGSERIAL PRIMARY KEY,
@@ -104,10 +113,33 @@ CREATE TABLE pokerman.chip_values (
     chip_value INTEGER NOT NULL,
     quantity INTEGER NOT NULL,
     chip_set_id BIGINT NOT NULL,
+    material VARCHAR(50),
+    color VARCHAR(50),
+    weight DECIMAL(5,2),
+    diameter DECIMAL(5,2),
+
     CONSTRAINT fk_chip_values_chip_set_id FOREIGN KEY (chip_set_id) REFERENCES pokerman.chip_sets (id)
 );
 
 CREATE INDEX idx_chip_values_chip_value ON pokerman.chip_values (chip_value);
+
+
+-- Insert "default" chip-set in Equipment table
+INSERT INTO pokerman.equipments (id, created_at, updated_at, equipment_name, description, equipment_type_id)
+VALUES (1, NOW(), NOW(), 'Default Chip Set 500', 'Standard chip-set for tournaments 500 chips total', 1);
+
+-- Insert the chip set
+INSERT INTO pokerman.chip_sets (id, tournament_chip_set)
+VALUES (1, TRUE);
+
+-- Insert the chip values for this chip set
+INSERT INTO pokerman.chip_values (chip_value, quantity, chip_set_id, material, color, weight, diameter)
+VALUES
+(25, 120, 1, 'Ceramic', 'Green', 10.00, 39.00),
+(100, 100, 1, 'Ceramic', 'Black', 10.00, 39.00),
+(500, 100, 1, 'Ceramic', 'Light Purple', 10.00, 39.00),
+(1000, 120, 1, 'Ceramic', 'Yellow', 10.00, 39.00),
+(5000, 40, 1, 'Ceramic', 'Orange', 10.00, 39.00);
 
 CREATE TABLE pokerman.levels (
     id BIGSERIAL PRIMARY KEY,
@@ -308,6 +340,18 @@ CREATE TABLE pokerman.poker_tables (
 );
 
 CREATE INDEX idx_poker_tables_seats ON pokerman.poker_tables (seats);
+
+INSERT INTO pokerman.equipments (created_at, equipment_type_id, updated_at, equipment_name, description)
+VALUES (
+    NOW(),
+    (SELECT id FROM pokerman.equipment_types WHERE type_name = 'Poker Table'),
+    NOW(),
+    'Default Poker Table',
+    'Standard pokerbord med plass til 10 spillere'
+);
+
+INSERT INTO pokerman.poker_tables (seats, id)
+VALUES (10, (SELECT id FROM pokerman.equipments WHERE equipment_name = 'Default Poker Table'));
 
 CREATE TABLE pokerman.specification_equipments (
     equipment_id BIGINT NOT NULL,
